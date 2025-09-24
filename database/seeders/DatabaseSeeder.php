@@ -81,17 +81,27 @@ class DatabaseSeeder extends Seeder
             $viaje->save();
         }
 
-        // Create a supervisor user
-        $user = new User([
-            'id_supervisor' => 'SUP-001',
-            'nombre' => 'Supervisor Test',
-            'email' => 'supervisor@example.com',
-            'password' => Hash::make('password'), // Hash the password
-            'rol' => 'supervisor',
-            'activo' => true,
-        ]);
-        $user->setConnection('mongodb'); // Explicitly set connection
-        $user->save();
+        // Create supervisor users
+        $supervisorEmails = [
+            "michi@safefleet.com",
+            "batres@safefleet.com",
+            "jarold@safefleet.com",
+            "samuel@safefleet.com",
+            "admin@safefleet.com"
+        ];
+
+        foreach ($supervisorEmails as $index => $email) {
+            $user = new User([
+                'id_supervisor' => 'SUP-' . str_pad($index + 1, 3, '0', STR_PAD_LEFT),
+                'nombre' => $faker->name(),
+                'email' => $email,
+                'password' => Hash::make('$SafeFleet2025'), // Hash the password
+                'rol' => 'supervisor',
+                'activo' => true,
+            ]);
+            $user->setConnection('mongodb'); // Explicitly set connection
+            $user->save();
+        }
 
         $this->call(DictamenSeeder::class);
     }
