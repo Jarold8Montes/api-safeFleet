@@ -19,9 +19,9 @@ class DatabaseSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        // Create 20 Operador records manually
+        // Create 50 Operador records manually
         $operadores = [];
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 50; $i++) {
             $operador = new Operador([
                 'id_operador' => 'OP-' . $faker->unique()->randomNumber(5),
                 'nombre' => $faker->name(),
@@ -43,9 +43,9 @@ class DatabaseSeeder extends Seeder
             $operadores[] = $operador;
         }
 
-        // Create 20 Tracto records manually
+        // Create 50 Tracto records manually
         $tractos = [];
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 50; $i++) {
             $tracto = new Tracto([
                 'id_tracto' => 'TR-' . $faker->unique()->randomNumber(5),
                 'placas' => $faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
@@ -58,8 +58,8 @@ class DatabaseSeeder extends Seeder
             $tractos[] = $tracto;
         }
 
-        // Create 20 Viaje records manually
-        for ($i = 0; $i < 20; $i++) {
+        // Create 50 Viaje records manually
+        for ($i = 0; $i < 50; $i++) {
             $viaje = new Viaje([
                 'id_viaje' => 'VJ-' . $faker->unique()->randomNumber(5),
                 'origen' => $faker->city(),
@@ -84,5 +84,7 @@ class DatabaseSeeder extends Seeder
         ]);
         $user->setConnection('mongodb'); // Explicitly set connection
         $user->save();
+
+        $this->call(DictamenSeeder::class);
     }
 }
