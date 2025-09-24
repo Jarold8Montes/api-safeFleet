@@ -22,37 +22,52 @@ class Operador extends Model
 
     public function dictamenes(): HasMany { return $this->hasMany(Dictamen::class); }
 
-    public function getBpmRangeAttribute()
+    /**
+     * Calcula y devuelve el rango de BPM recomendado.
+     *
+     * @return array
+     */
+    public function getBpmRangeAttribute(): array
     {
-        $score = 0;
+        $score = $this->calculateRiskScore();
 
-        // Calculate age
+        if ($score < config('bpm_rules.score_thresholds.wide_range')) {
+            return config('bpm_rules.ranges.wide');
+        }
+
+        return config('bpm_rules.ranges.optimal');
+    }
+
+    /**
+     * Calcula el puntaje de riesgo del operador.
+     *
+     * @return float
+     */
+    public function calculateRiskScore(): float
+    {
+        $score = 0.0;
+
+        // Puntuación por edad
         if ($this->fecha_nacimiento) {
             $age = Carbon::parse($this->fecha_nacimiento)->age;
-            if ($age > 50) {
-                $score += 1;
+            if ($age > config('bpm_rules.age_threshold')) {
+                $score += config('bpm_rules.age_score');
             }
         }
 
-        // Risk factors
+        // Puntuación por factores de riesgo
         $riskFactors = $this->factores_riesgo ?? [];
-        if (!in_array('ninguno', $riskFactors)) {
-            if (in_array('Hipertensión arterial', $riskFactors)) $score += 2;
-            if (in_array('Diabetes o prediabetes', $riskFactors)) $score += 2;
-            if (in_array('Sistema inmunológico debilitado', $riskFactors)) $score += 2;
-            if (in_array('Obesidad o sobrepeso', $riskFactors)) $score += 1.5;
-            if (in_array('Niveles elevados de colesterol o triglicéridos', $riskFactors)) $score += 1;
-            if (in_array('Trastornos hormonales', $riskFactors)) $score += 1;
+        if (in_array('ninguno', $riskFactors)) {
+            return $score;
         }
 
-        $min = 60; // Default to optimal range
-        $max = 100;
-
-        if ($score < 3) {
-            $min = 50;
-            $max = 110;
+        $factorWeights = config('bpm_rules.risk_factors');
+        foreach ($riskFactors as $factor) {
+            if (isset($factorWeights[$factor])) {
+                $score += $factorWeights[$factor];
+            }
         }
 
-        return ['min' => $min, 'max' => $max];
+        return $score;
     }
 }
