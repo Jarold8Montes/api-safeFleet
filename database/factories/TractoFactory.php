@@ -32,6 +32,7 @@ class TractoFactory extends Factory
             'marca' => $this->faker->randomElement(['Volvo', 'Freightliner', 'Kenworth', 'Peterbilt', 'International']),
             'modelo' => $this->faker->word(),
             'activo' => $this->faker->boolean(),
+            'is_engine_on' => false,
         ];
     }
 }

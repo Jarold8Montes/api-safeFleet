@@ -13,6 +13,7 @@ class UpdateTractoRequest extends FormRequest
             'marca'     => 'nullable|string|max:255',
             'modelo'    => 'nullable|string|max:255',
             'activo'    => 'sometimes|boolean',
+            'is_engine_on' => 'sometimes|boolean',
         ];
     }
 }

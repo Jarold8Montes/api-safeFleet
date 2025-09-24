@@ -463,7 +463,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"id_tracto\": \"TR-54321\",\n    \"placas\": \"ABC123\",\n    \"marca\": \"Volvo\",\n    \"modelo\": \"FH16\",\n    \"activo\": true\n}"
+                            "raw": "{\n    \"id_tracto\": \"TR-54321\",\n    \"placas\": \"ABC123\",\n    \"marca\": \"Volvo\",\n    \"modelo\": \"FH16\",\n    \"activo\": true,\n    \"is_engine_on\": false\n}"
                         },
                         "url": {
                             "raw": "{{baseUrl}}/v1/tractos",
@@ -491,7 +491,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"modelo\": \"FH16 2023\",\n    \"activo\": false\n}"
+                            "raw": "{\n    \"modelo\": \"FH16 2023\",\n    \"activo\": false,\n    \"is_engine_on\": true\n}"
                         },
                         "url": {
                             "raw": "{{baseUrl}}/v1/tractos/:tracto",
