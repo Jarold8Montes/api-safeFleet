@@ -11,7 +11,7 @@ class AuthController extends Controller
     {
         $credentials = $r->only('email','password');
         if (!$token = Auth::guard('api')->attempt($credentials)) {
-            return $this->sendError('UNAUTHORIZED', [], 401);
+            return $this->sendError('Credenciales incorrectas', [], 401);
         }
         return $this->sendResponse([
             'access_token' => $token,
