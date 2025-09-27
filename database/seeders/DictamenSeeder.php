@@ -18,12 +18,11 @@ class DictamenSeeder extends Seeder
     {
         $faker = Faker::create('es_MX');
 
-        // Fetch existing Operador, Tracto, and Viaje IDs
+        // Retorna registros existentes deOperador, Tracto, and Viaje IDs
         $operadorIds = Operador::pluck('_id')->toArray();
         $tractoIds = Tracto::pluck('_id')->toArray();
         $viajeIds = Viaje::pluck('_id')->toArray();
 
-        // Ensure there are existing records to link to
         if (empty($operadorIds) || empty($tractoIds) || empty($viajeIds)) {
             echo "Please seed Operadores, Tractos, and Viajes first.\n";
             return;

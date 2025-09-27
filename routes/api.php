@@ -14,11 +14,11 @@ Route::get('/health', fn() => response()->json(['status'=>'ok']));
 
 Route::prefix('auth')->group(function () {
   Route::post('/login', [AuthController::class, 'login']);
-  Route::post('/refresh', [AuthController::class, 'refresh']); // Removed middleware
-  Route::post('/logout', [AuthController::class, 'logout']);   // Removed middleware
+  Route::post('/refresh', [AuthController::class, 'refresh']);
+  Route::post('/logout', [AuthController::class, 'logout']);
 });
 
-Route::prefix('v1')->group(function () { // Removed middleware
+Route::prefix('v1')->group(function () { 
   // Operadores
   Route::get('/operadores', [OperadorController::class, 'index']);
   Route::get('/operadores/{id}', [OperadorController::class, 'show']);
@@ -42,16 +42,15 @@ Route::prefix('v1')->group(function () { // Removed middleware
   Route::patch('/viajes/{id}/estado', [ViajeController::class, 'cambiarEstado']);
   Route::delete('/viajes/{id}', [ViajeController::class, 'destroy']);
 
-  // Dictámenes (ingreso normal)
+  // Dictámenes 
   Route::get('/dictamenes', [DictamenController::class, 'index']);
   Route::get('/dictamenes/{id}', [DictamenController::class, 'show']);
 
-  // Alertas (móvil/web) - Moved inside this group and removed middleware
+  // Alertas 
   Route::get('/alertas', [AlertaController::class, 'index']);
   Route::patch('/alertas/{id}/leida', [AlertaController::class, 'marcarLeida']);
 });
 
-// Dictámenes desde dispositivo (key de dispositivo en header) - Keep DeviceKey middleware
 Route::middleware(DeviceKey::class)->prefix('v1')->group(function () {
   Route::post('/dictamenes', [DictamenController::class, 'store']);
 });

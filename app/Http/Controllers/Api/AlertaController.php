@@ -14,7 +14,7 @@ class AlertaController extends Controller
     public function index(Request $req)
     {
         $q = Alerta::query();
-        $q->where('tipo', 'no_apto'); // Filter for 'no_apto' alerts
+        $q->where('tipo', 'no_apto'); //fitros for 'no_apto' alerts
 
         if ($req->filled('leida')) $q->where('leida', filter_var($req->leida, FILTER_VALIDATE_BOOLEAN));
         if ($req->filled('operador_id')) $q->where('operador_id', $req->operador_id);
@@ -34,11 +34,7 @@ class AlertaController extends Controller
             $dictamen = $a->dictamen_id ? Dictamen::find($a->dictamen_id) : null;
             $supervisor = null; // Initialize supervisor
 
-            // If dictamen exists and has an operator, try to find the supervisor
             if ($dictamen && $dictamen->operador_id) {
-                // Assuming supervisor is linked to the operator or dictamen in some way
-                // For now, let's assume a generic supervisor or fetch based on some logic
-                // For this example, I'll just fetch the first supervisor user
                 $supervisor = User::where('rol', 'supervisor')->first();
             }
 
@@ -55,20 +51,19 @@ class AlertaController extends Controller
                     'id_operador'    => $operador->id_operador ?? null,
                     'nombre'         => $operador->nombre ?? null,
                     'foto'           => $operador->foto_url ?? null,
-                    'fecha_nacimiento' => $operador->fecha_nacimiento ?? null, // Changed from 'edad'
+                    'fecha_nacimiento' => $operador->fecha_nacimiento ?? null, 
                     'telefono'       => $operador->telefono ?? null,
                     'factores_riesgo'=> $operador->factores_riesgo ?? [],
                 ] : null,
-                'tracto' => $viaje && $viaje->tracto_id ? \App\Models\Tracto::find($viaje->tracto_id) : null, // Fetch Tracto info
+                'tracto' => $viaje && $viaje->tracto_id ? \App\Models\Tracto::find($viaje->tracto_id) : null, 
                 'dictamen' => $dictamen ? [
-                    'apto' => (int) $dictamen->apto, // Cast boolean to integer (0 or 1)
+                    'apto' => (int) $dictamen->apto, 
                     'bmp'  => $dictamen->bmp,
                 ] : null,
                 'supervisor' => $supervisor ? [
                     'id_supervisor' => $supervisor->id_supervisor ?? null,
                     'nombre' => $supervisor->nombre ?? null,
                     'email' => $supervisor->email ?? null,
-                    // 'password' => '******', // Never expose password
                     'rol' => $supervisor->rol ?? null,
                 ] : null,
                 'fecha' => $a->fecha,

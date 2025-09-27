@@ -16,7 +16,7 @@ return new class extends Migration
             try {
                 $collection->dropIndex('nombre_text');
             } catch (\Exception $e) {
-                // Ignore if index does not exist
+                // para despues xD
             }
             $collection->index(['nombre' => 'text'], 'operadores_nombre_text_index');
         });
