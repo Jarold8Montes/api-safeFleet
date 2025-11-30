@@ -1,7 +1,14 @@
 # Configuración para Nixpacks en Railway
 # https://nixpacks.com/docs/configuration/file
 
+[providers]
+php = "8.2"
+
+[phases.setup]
+nixPkgs = ["pkgs.php82Extensions.mongodb", "pkgs.php82Extensions.sodium"]
+
 [phases.install]
-# Instala las extensiones de PHP necesarias.
-# En este caso, la extensión para MongoDB.
-nixPkgs = ["pkgs.php.extensions.mongodb"]
+cmds = ["composer install --optimize-autoloader --no-scripts"]
+
+[start]
+cmd = "php artisan serve --host 0.0.0.0 --port $PORT"
