@@ -1,0 +1,11 @@
+# Configuración para Nixpacks en Railway
+# https://nixpacks.com/docs/configuration/file
+
+[phases.setup]
+# Instala las extensiones de PHP necesarias.
+# En este caso, la extensión para MongoDB.
+nixPkgs = ["pkgs.php.extensions.mongodb"]
+
+[build]
+# Comando para instalar las dependencias de Composer.
+cmds = ["composer install --optimize-autoloader --no-interaction"]
